@@ -10,16 +10,16 @@
  */
 char *_strpbrk(char *s, char *accept)
 {
-    while (*s)
-    {
-        for (char *b = accept; *b; b++)
-        {
-            if (*s == *b)
-            {
-                return (s);
-            }
-        }
-        s++;
-    }
-    return (NULL);
+	while (*s)
+	{
+		for (char *b = accept; *b; b++)
+		{
+			if (*s == *b)
+			{
+				return (s);
+			}
+		}
+		s++;
+	}
+	return (NULL);
 }

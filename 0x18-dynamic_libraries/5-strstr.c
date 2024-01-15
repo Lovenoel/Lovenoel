@@ -9,23 +9,22 @@
  */
 char *_strstr(char *haystack, char *needle)
 {
-    char *k, *e;
+	char *k, *e;
 
-    while (*haystack)
-    {
-        k = haystack;
-        e = needle;
-
-        while (*e && (*k == *e))
-        {
-            k++;
-            e++;
-        }
-        if (*e == '\0')
-        {
-            return (haystack);
-        }
-        haystack++;
-    }
-    return (NULL);
+	while (*haystack)
+	{
+		k = haystack;
+		e = needle;
+		while (*e && (*k == *e))
+		{
+			k++;
+			e++;
+		}
+		if (*e == '\0')
+		{
+			return (haystack);
+		}
+		haystack++;
+	}
+	return (NULL);
 }
