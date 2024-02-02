@@ -6,29 +6,50 @@
  * @ht: the hash table to add or update the key/value to
  * @key: the key (cannot be an empty string)
  * @value: the value associated with the key (must be duplicated)
- * Return: 1 if it succeeded, 0 otherwise
+ * Return: 1 if successful, 0 otherwise
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	if (!ht || !key || !*key)
-		return (0);
+    unsigned long int index;
+    hash_node_t *new_node, *current;
 
-	unsigned long int index = key_index((unsigned char *)key, ht->size);
-	hash_node_t *current = ht->array[index];
+    if (ht == NULL || key == NULL || *key == '\0')
+        return (0);
 
-	while (current && strcmp(current->key, key) && (current = current->next));
+    index = key_index((unsigned char *)key, ht->size);
+    current = ht->array[index];
 
-	if (current)
-		return (update_node_value(current, value));
+    while (current != NULL)
+    {
+        if (strcmp(current->key, key) == 0)
+            return update_node_value(current, value);
 
-	hash_node_t *new_node = malloc(sizeof(hash_node_t));
-	if (!new_node || !(new_node->key = strdup(key)) ||
-			!(new_node->value = strdup(value)))
-	{
-		free(new_node);
-		return (0);
-	}
-	new_node->next = ht->array[index];
-       	ht->array[index] = new_node;
-	return (1);
+        current = current->next;
+    }
+
+    /* Key doesn't exist, create a new node */
+    new_node = malloc(sizeof(hash_node_t));
+    if (new_node == NULL)
+        return (0);
+
+    new_node->key = strdup(key);
+    if (new_node->key == NULL)
+    {
+        free(new_node);
+        return (0);
+    }
+
+    new_node->value = strdup(value);
+    if (new_node->value == NULL)
+    {
+        free(new_node->key);
+        free(new_node);
+        return (0);
+    }
+
+    /* Add the new node at the beginning of the linked list */
+    new_node->next = ht->array[index];
+    ht->array[index] = new_node;
+
+    return (1);
 }
