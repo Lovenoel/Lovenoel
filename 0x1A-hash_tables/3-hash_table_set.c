@@ -11,31 +11,26 @@
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-    unsigned long int index;
-    hash_node_t *new_node, *current;
+	unsigned long int index;
+	hash_node_t *new_node, *current;
 
-    if (ht == NULL || key == NULL || *key == '\0')
-        return (0);
+	if (ht == NULL || key == NULL || *key == '\0')
+		return (0);
+	index = key_index((unsigned char *)key, ht->size);
+	current = ht->array[index];
 
-    index = key_index((unsigned char *)key, ht->size);
-    current = ht->array[index];
-
-    while (current != NULL)
-    {
-        if (strcmp(current->key, key) == 0)
-            return (update_node_value(current, value));
-
-        current = current->next;
-    }
-
-    /* Key doesn't exist, create a new node */
-    new_node = create_new_node(key, value);
-    if (new_node == NULL)
-        return (0);
-
-    /* Add the new node at the beginning of the linked list */
-    new_node->next = ht->array[index];
-    ht->array[index] = new_node;
-
-    return (1);
+	while (current != NULL)
+	{
+		if (strcmp(current->key, key) == 0)
+			return (update_node_value(current, value));
+		current = current->next;
+	}
+	/* Key doesn't exist, create a new node */
+	new_node = create_new_node(key, value);
+	if (new_node == NULL)
+		return (0);
+	/* Add the new node at the beginning of the linked list */
+	new_node->next = ht->array[index];
+	ht->array[index] = new_node;
+	return (1);
 }
