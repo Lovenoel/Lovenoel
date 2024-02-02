@@ -10,27 +10,27 @@
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-    unsigned long int index;
-    hash_node_t *new_node, *current;
+        unsigned long int index;
+        hash_node_t *new_node, *current;
 
-    if (ht == NULL || key == NULL || *key == '\0')
-        return (0);
+        if (ht == NULL || key == NULL || *key == '\0')
+            return (0);
 
-    index = key_index((unsigned char *)key, ht->size);
-    current = ht->array[index];
+        index = key_index((unsigned char *)key, ht->size);
+        current = ht->array[index];
 
-    while (current != NULL)
-    {
-        if (strcmp(current->key, key) == 0)
+        while (current != NULL)
         {
-            /* Key already exists, update value and return */
-            free(current->value);
-            current->value = strdup(value);
-            if (current->value == NULL)
-                return (0);
-            return (1);
-        }
-        current = current->next;
+                if (strcmp(current->key, key) == 0)
+                {
+                        /* Key already exists, update value and return */
+                        free(current->value);
+                        current->value = strdup(value);
+                        if (current->value == NULL)
+                                return (0);
+                                return (1);
+                }
+                current = current->next;
     }
 
     /* Key doesn't exist, create a new node */
