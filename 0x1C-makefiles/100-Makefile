@@ -1,0 +1,30 @@
+CC := gcc
+CFLAGS := -Wall -Werror -Wextra -pedantic
+SRC := $(wildcard *.c)
+OBJ := $(SRC:.c=.o)
+NAME := school
+
+.PHONY: all clean fclean oclean re
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) -o $(NAME)
+
+clean:
+	-$(RM) $(NAME)
+	-$(RM) $(wildcard *~)
+
+oclean:
+	-$(RM) $(OBJ)
+
+fclean: clean oclean
+
+re: fclean all
+
+$(OBJ): $(SRC) m.h
+	$(CC) $(CFLAGS) -c $(SRC)
+
+m.h:
+	@echo "Missing header file: m.h"
+	@exit 1
